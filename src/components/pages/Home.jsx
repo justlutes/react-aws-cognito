@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Auth } from 'aws-amplify';
-import Input from '../atoms/Input';
-import Button from '../atoms/Button';
+import { CSSTransition } from 'react-transition-group';
+import Register from '../molecules/Register';
+import ConfirmSignUp from '../molecules/ConfirmSignUp';
 
 const Wrapper = styled.div`
   display: flex;
@@ -10,7 +11,7 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-export default class SignUp extends React.Component {
+export default class Home extends React.PureComponent {
   constructor() {
     super();
 
@@ -20,6 +21,7 @@ export default class SignUp extends React.Component {
       email: '',
       phone_number: '',
       authCode: '',
+      confirm: false,
     };
 
     this.onChange = this.onChange.bind(this);
@@ -45,7 +47,7 @@ export default class SignUp extends React.Component {
           phone_number,
         },
       });
-      console.log('successful');
+      this.setState({ confirm: true });
     } catch (error) {
       console.error('Error sigining up', error);
     }
@@ -62,31 +64,15 @@ export default class SignUp extends React.Component {
 
   render() {
     return (
-      <Wrapper>
-        <h2>SignUp</h2>
-        <Input placeholder="Username" onChange={e => this.onChange('username', e.target.value)} />
-        <Input
-          placeholder="Password"
-          type="password"
-          onChange={e => this.onChange('password', e.target.value)}
-        />
-        <Input
-          placeholder="Email"
-          type="email"
-          onChange={e => this.onChange('email', e.target.value)}
-        />
-        <Input
-          placeholder="Phone Number"
-          type="tel"
-          onChange={e => this.onChange('phone_number', e.target.value)}
-        />
-        <Button text="Sign Up" action={this.signUp} />
-        <Input
-          placeholder="Authenitcation Code"
-          onChange={e => this.onChange('authCode', e.target.value)}
-        />
-        <Button text="Confirm Sign Up" action={this.confirmSignUp} />
-      </Wrapper>
+      <CSSTransition timeout={1000} classNames="fade">
+        <Wrapper>
+          {!this.state.confirm ? (
+            <Register onChange={this.onChange} action={this.signUp} />
+          ) : (
+            <ConfirmSignUp onChange={this.onChange} action={this.confirmSignUp} />
+          )}
+        </Wrapper>
+      </CSSTransition>
     );
   }
 }

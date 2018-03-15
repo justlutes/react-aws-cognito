@@ -1,12 +1,54 @@
 import React, { Component } from 'react';
-import SignUp from './components/pages/SignUp';
+import { Auth } from 'aws-amplify';
+import './App.css';
+import Routes from './Routes';
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      authStatus: false,
+    };
+
+    this.handleWindowClose = this.handleWindowClose.bind(this);
+    this.validateUserSession = this.validateUserSession.bind(this);
+  }
+
+  componentWillMount() {
+    this.validateUserSession();
+    window.addEventListener('beforeunload', this.handleWindowClose);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', this.handleWindowClose);
+  }
+
+  async handleWindowClose(e) {
+    e.preventDefault();
+
+    try {
+      await Auth.signOut();
+      sessionStorage.setItem('isLoggedIn', false);
+      this.setState({ authStatus: false });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  validateUserSession() {
+    const checkIfLoggedIn = sessionStorage.getItem('isLoggedIn');
+    if (checkIfLoggedIn) {
+      this.setState({ authStatus: true });
+    } else {
+      this.setState({ authStatus: false });
+    }
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header" />
-        <SignUp />
+        <header className="App-header">React + Cognito</header>
+        <Routes authStatus={this.state.authStatus} />
       </div>
     );
   }
