@@ -37,6 +37,7 @@ class App extends Component {
 
   validateUserSession() {
     const checkIfLoggedIn = sessionStorage.getItem('isLoggedIn');
+    console.log(checkIfLoggedIn);
     if (checkIfLoggedIn) {
       this.setState({ authStatus: true });
     } else {
@@ -46,8 +47,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">React + Cognito</header>
+      <div>
         <Routes authStatus={this.state.authStatus} />
       </div>
     );

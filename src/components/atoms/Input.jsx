@@ -4,13 +4,15 @@ import PropTypes from 'proptypes';
 
 const StyledInput = styled.input`
   height: 40px;
+  width: 60%;
   margin-bottom: 10px;
+  border-radius: 3px;
   border: none;
   outline: none;
-  border-bottom: 2px solid #4caf50;
+  border-bottom: 2px solid hsla(36, 91%, 75%, 1);
   font-size: 16px;
   &::placeholder: {
-    color: 'rgba(0, 0, 0, 0.3)';
+    color: hsla(0, 0%, 91%, 1);
   }
 `;
 

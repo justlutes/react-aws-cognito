@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Redirect } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import { CSSTransition } from 'react-transition-group';
 import Register from '../molecules/Register';
@@ -7,8 +8,23 @@ import ConfirmSignUp from '../molecules/ConfirmSignUp';
 
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+`;
+
+const RightWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background-color: hsla(203, 56%, 32%, 1);
+  width: 60%;
+  height: 100vh;
+`;
+
+const PlaceHolder = styled.div`
+  width: 40%;
+  height: 100vh;
 `;
 
 export default class Home extends React.PureComponent {
@@ -22,6 +38,7 @@ export default class Home extends React.PureComponent {
       phone_number: '',
       authCode: '',
       confirm: false,
+      authSuccess: false,
     };
 
     this.onChange = this.onChange.bind(this);
@@ -56,7 +73,7 @@ export default class Home extends React.PureComponent {
   async confirmSignUp() {
     try {
       await Auth.confirmSignUp(this.state.username, this.state.authCode);
-      console.log('successful confirm');
+      this.setState({ authSuccess: true });
     } catch (error) {
       console.error(error);
     }
@@ -66,11 +83,15 @@ export default class Home extends React.PureComponent {
     return (
       <CSSTransition timeout={1000} classNames="fade">
         <Wrapper>
-          {!this.state.confirm ? (
-            <Register onChange={this.onChange} action={this.signUp} />
-          ) : (
-            <ConfirmSignUp onChange={this.onChange} action={this.confirmSignUp} />
-          )}
+          <PlaceHolder />
+          <RightWrapper>
+            {!this.state.confirm ? (
+              <Register onChange={this.onChange} action={this.signUp} />
+            ) : (
+              <ConfirmSignUp onChange={this.onChange} action={this.confirmSignUp} />
+            )}
+          </RightWrapper>
+          {this.state.authSuccess && <Redirect to="/login" />}
         </Wrapper>
       </CSSTransition>
     );

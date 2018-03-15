@@ -3,13 +3,18 @@ import styled from 'styled-components';
 import PropTypes from 'proptypes';
 
 const Container = styled.div`
-  width: 170px;
+  display: flex;
+  justify-content: center;
+  color: #fff;
+  align-items: center;
+  width: 60%;
   padding: 10px 0;
-  background-color: #ddd;
+  background-color: hsla(36, 91%, 75%, 1);
   cursor: pointer;
   border-radius: 3px;
-  &:hover: {
-    background-color: #ededed;
+  text-transform: uppercase;
+  &:hover {
+    background-color: hsla(36, 91%, 75%, 0.75);
   }
 `;
 
