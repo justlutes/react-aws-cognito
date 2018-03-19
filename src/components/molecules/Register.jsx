@@ -120,13 +120,13 @@ const Register = withFormik({
     }
     return errors;
   },
-  handleSubmit: async (values, { props, setError, setSubmitting }) => {
+  handleSubmit: async (values, { props, setStatus, setSubmitting }) => {
     setSubmitting(true);
     try {
       await props.action(values);
       setSubmitting(false);
     } catch (error) {
-      setError(error);
+      setStatus('error');
       setSubmitting(false);
     }
   },

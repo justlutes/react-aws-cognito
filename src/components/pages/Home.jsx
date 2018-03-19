@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import { CSSTransition } from 'react-transition-group';
 import Register from '../molecules/Register';
-import ConfirmSignUp from '../molecules/ConfirmSignUp';
+import ConfirmRegister from '../molecules/ConfirmRegister';
 
 const Wrapper = styled.div`
   display: flex;
@@ -33,24 +33,17 @@ export default class Home extends React.PureComponent {
 
     this.state = {
       username: '',
-      authCode: '',
       confirm: false,
       authSuccess: false,
     };
 
-    this.onChange = this.onChange.bind(this);
     this.signUp = this.signUp.bind(this);
     this.confirmSignUp = this.confirmSignUp.bind(this);
   }
 
-  onChange(key, value) {
-    this.setState({ [key]: value });
-  }
-
-  async signUp(values) {
-    const {
-      username, password, email, phone_number,
-    } = values;
+  async signUp({
+    username, password, email, phone_number,
+  }) {
     this.setState({ username });
     try {
       await Auth.signUp({
@@ -63,34 +56,34 @@ export default class Home extends React.PureComponent {
       });
       this.setState({ confirm: true });
     } catch (error) {
-      console.error('Error sigining up', error);
+      throw error;
     }
   }
 
-  async confirmSignUp() {
+  async confirmSignUp({ authcode }) {
     try {
-      await Auth.confirmSignUp(this.state.username, this.state.authCode);
+      await Auth.confirmSignUp(this.state.username, authcode);
       this.setState({ authSuccess: true });
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   }
 
   render() {
     return (
-      <CSSTransition timeout={1000} classNames="fade">
-        <Wrapper>
-          <PlaceHolder />
-          <RightWrapper>
+      <Wrapper>
+        <PlaceHolder />
+        <RightWrapper>
+          <CSSTransition timeout={1000} classNames="fade">
             {!this.state.confirm ? (
               <Register action={this.signUp} />
             ) : (
-              <ConfirmSignUp onChange={this.onChange} action={this.confirmSignUp} />
+              <ConfirmRegister action={this.confirmSignUp} />
             )}
-          </RightWrapper>
-          {this.state.authSuccess && <Redirect to="/login" />}
-        </Wrapper>
-      </CSSTransition>
+          </CSSTransition>
+        </RightWrapper>
+        {this.state.authSuccess && <Redirect to="/login" />}
+      </Wrapper>
     );
   }
 }

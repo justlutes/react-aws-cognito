@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Auth } from 'aws-amplify';
 import './App.css';
 import Routes from './Routes';
 
-class App extends Component {
+class App extends React.PureComponent {
   constructor() {
     super();
     this.state = {
@@ -38,7 +38,7 @@ class App extends Component {
   validateUserSession() {
     const checkIfLoggedIn = sessionStorage.getItem('isLoggedIn');
 
-    if (checkIfLoggedIn === true) {
+    if (checkIfLoggedIn === 'true') {
       this.setState({ authStatus: true });
     } else {
       this.setState({ authStatus: false });
