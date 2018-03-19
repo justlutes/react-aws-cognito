@@ -25,7 +25,7 @@ const Routes = ({ authStatus }) => (
 );
 
 PrivateRoute.propTypes = {
-  component: PropTypes.node.isRequired,
+  component: PropTypes.func.isRequired,
   authStatus: PropTypes.bool.isRequired,
 };
 

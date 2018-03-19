@@ -14,7 +14,7 @@ export default class ComfirmSignUp extends React.Component {
       <React.Fragment>
         <h2>Confirm SignUp</h2>
         <Input
-          placeholder="Authenitcation Code"
+          placeholder="Authentication Code"
           onChange={e => onChange('authCode', e.target.value)}
         />
         <Button text="Confirm Sign Up" action={action} />

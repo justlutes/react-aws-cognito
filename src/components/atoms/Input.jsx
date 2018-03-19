@@ -11,6 +11,7 @@ const StyledInput = styled.input`
   outline: none;
   border-bottom: 2px solid hsla(36, 91%, 75%, 1);
   font-size: 16px;
+  padding: 0px 10px;
   &::placeholder: {
     color: hsla(0, 0%, 91%, 1);
   }

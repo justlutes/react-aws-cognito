@@ -37,8 +37,8 @@ class App extends Component {
 
   validateUserSession() {
     const checkIfLoggedIn = sessionStorage.getItem('isLoggedIn');
-    console.log(checkIfLoggedIn);
-    if (checkIfLoggedIn) {
+
+    if (checkIfLoggedIn === true) {
       this.setState({ authStatus: true });
     } else {
       this.setState({ authStatus: false });
