@@ -33,9 +33,6 @@ export default class Home extends React.PureComponent {
 
     this.state = {
       username: '',
-      password: '',
-      email: '',
-      phone_number: '',
       authCode: '',
       confirm: false,
       authSuccess: false,
@@ -50,11 +47,11 @@ export default class Home extends React.PureComponent {
     this.setState({ [key]: value });
   }
 
-  async signUp() {
+  async signUp(values) {
     const {
       username, password, email, phone_number,
-    } = this.state;
-
+    } = values;
+    this.setState({ username });
     try {
       await Auth.signUp({
         username,
@@ -86,7 +83,7 @@ export default class Home extends React.PureComponent {
           <PlaceHolder />
           <RightWrapper>
             {!this.state.confirm ? (
-              <Register onChange={this.onChange} action={this.signUp} />
+              <Register action={this.signUp} />
             ) : (
               <ConfirmSignUp onChange={this.onChange} action={this.confirmSignUp} />
             )}
